@@ -6,9 +6,10 @@ enum Lights {
   RedYellow,
   Yellow,
   Green,
+  GreenBlink,
 }
 
-type ActiveLight = Lights.Red | Lights.RedYellow | Lights.Yellow | Lights.Green;
+type ActiveLight = Lights.Red | Lights.RedYellow | Lights.Yellow | Lights.Green | Lights.GreenBlink;
 
 const DURATIONS: Record<ActiveLight, number> = {
   [Lights.Red]: 4_000,
@@ -18,6 +19,8 @@ const DURATIONS: Record<ActiveLight, number> = {
   [Lights.Yellow]: 1_000,
 
   [Lights.Green]: 6_000,
+
+  [Lights.GreenBlink]: 2_000,
 };
 
 // transitions:
@@ -28,7 +31,8 @@ const DURATIONS: Record<ActiveLight, number> = {
 const TRANSITIONS: Record<ActiveLight, ActiveLight> = {
   [Lights.Red]: Lights.RedYellow,
   [Lights.RedYellow]: Lights.Green,
-  [Lights.Green]: Lights.Yellow,
+  [Lights.Green]: Lights.GreenBlink,
+  [Lights.GreenBlink]: Lights.Yellow,
   [Lights.Yellow]: Lights.Red,
 };
 
@@ -63,7 +67,7 @@ const TrafficLight = () => {
         className={`TrafficLight__light ${[Lights.Yellow, Lights.RedYellow].includes(active) ? "TrafficLight__light--active" : ""} TrafficLight__light--yellow`}
       ></div>
       <div
-        className={`TrafficLight__light ${active === Lights.Green ? "TrafficLight__light--active" : ""} TrafficLight__light--green`}
+        className={`TrafficLight__light ${[Lights.Green, Lights.GreenBlink].includes(active) ? "TrafficLight__light--active" : ""} TrafficLight__light--green ${active === Lights.GreenBlink ? 'TrafficLight__light--blink' : ''}`}
       ></div>
     </div>
   );
